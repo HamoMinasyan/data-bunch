@@ -1,0 +1,17 @@
+{
+  "name": "data-bunch",
+  "version": "1.0.1",
+  "description": "DataBunch is a library based on the OBSERVER design pattern. It is designed to subscribe to data and makes it easy to use.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "data bunch",
+    "observer",
+    "subscriber",
+    "data management"
+  ],
+  "author": "Hamo Minasyan",
+  "license": "ISC"
+}
