@@ -1,6 +1,6 @@
-![DataBunch](./images/data-bunch-bg.png)
+![DataBunch](images/data-bunch-bg.png)
 
-DataBunch is a library based on the [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
+DataBunch is a JavaScript library based on the [Observer Design Pattern](https://en.wikipedia.org/wiki/Observer_pattern).
 It is designed to subscribe to data and makes it easy to use.
 
 ### Installation
@@ -96,7 +96,7 @@ dataBunch.reset("users", ...); // only values with the corresponding data key wi
 ---
 ## And what about a lot of mixed data?
 You can easily create multiple instance of the DataBunch by separating the data.
-![DataBunch](./images/data-bunch-multiple.png)
+![DataBunch](images/data-bunch-multiple.png)
 ``` javascript
 // examples
 
