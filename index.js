@@ -1,4 +1,4 @@
-import { ERR, buildUniqueKeyName } from "./utils";
+import { buildUniqueKeyName } from "./utils";
 
 class DataBunch {
     constructor (props = {}) {
@@ -15,7 +15,7 @@ class DataBunch {
     set = (values = {}) => {
         const keys = Object.keys(values);
         for (let i = 0, len = keys.length; i < len; ++i) {
-            if (!this.dataBunch[keys[i]]) return ERR.initialValues("set", keys[i]);
+            // if (!this.dataBunch[keys[i]]) return ERR.initialValues("set", keys[i]);
 
             const key = keys[i];
             const newValue = values[key];
@@ -34,7 +34,7 @@ class DataBunch {
     get = (...keys) => {
         const acc = {};
         for (let i = 0, len = keys.length; i < len; ++i) {
-            if (!this.dataBunch[keys[i]]) return ERR.initialValues("get", keys[i]);
+            // if (!this.dataBunch[keys[i]]) return ERR.initialValues("get", keys[i]);
 
             acc[keys[i]] = this.dataBunch[keys[i]].value;
         }
@@ -48,7 +48,7 @@ class DataBunch {
 
         for (let i = 0, len = keys.length; i < len; ++i) {
             const key = keys[i];
-            if (!this.dataBunch[key]) return ERR.initialValues("subscribe", key);
+            // if (!this.dataBunch[key]) return ERR.initialValues("subscribe", key);
 
             this.dataBunch[key].subscribers[uniqueKey] = values[key];
             values[key](this.dataBunch[key].value);
@@ -68,7 +68,7 @@ class DataBunch {
         const resetKeys = keys.length ? keys : Object.keys(this.initialValues);
         for (let i = 0, len = resetKeys.length; i < len; ++i) {
             const resetKey = resetKeys[i];
-            if (!this.dataBunch[resetKey]) return ERR.initialValues("reset", resetKey);
+            // if (!this.dataBunch[resetKey]) return ERR.initialValues("reset", resetKey);
 
             this.dataBunch[resetKey] = {
                 value: this.initialValues[resetKey],
