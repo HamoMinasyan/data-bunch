@@ -1,4 +1,9 @@
-import { ERR, buildUniqueKeyName } from "./utils";
+import { setMaker } from "./methods/set";
+import { getMaker } from "./methods/get";
+import { subscribeMaker } from "./methods/subscribe";
+import { sendMaker } from "./methods/send";
+import { resetMaker } from "./methods/reset";
+import { removeMaker } from "./methods/remove";
 
 class DataBunch {
     constructor (props = {}) {
@@ -9,80 +14,22 @@ class DataBunch {
         this.uniqueKey = 0;
         this.dataBunch = {};
 
-        this.reset();
+        this.remove();
     };
 
-    set = (values = {}) => {
-        const keys = Object.keys(values);
-        for (let i = 0, len = keys.length; i < len; ++i) {
-            if (!this.dataBunch[keys[i]]) {
-                ERR.initialValues("set", keys[i]);
-                continue;
-            }
+    set = (values = {}) => setMaker.apply(this, [values]);
 
-            const key = keys[i];
-            const newValue = values[key];
-            const { value: prevValue, subscribers } = this.dataBunch[key];
-            const subscribersKeys = Object.keys(subscribers);
-            this.dataBunch[key].value = (typeof newValue === "function") ? newValue(prevValue) : newValue;
+    get = (...keys) => getMaker.apply(this, [keys]);
 
-            for (let i = 0, len = subscribersKeys.length; i < len; ++i) {
-                const subscriber = subscribers[subscribersKeys[i]];
-                subscriber(this.dataBunch[key]?.value);
-            }
-            this.watcher(this.dataBunch);
-        }
-    };
+    subscribe = (values = {}) => subscribeMaker.apply(this, [values, 1]);
 
-    get = (...keys) => {
-        const acc = {};
-        for (let i = 0, len = keys.length; i < len; ++i) {
-            if (!this.dataBunch[keys[i]]) {
-                ERR.initialValues("get", keys[i]);
-                continue;
-            }
+    send = (values = {}) => sendMaker.apply(this, [values]);
 
-            acc[keys[i]] = this.dataBunch[keys[i]].value;
-        }
-        return acc;
-    };
+    listen = (values = {}) => subscribeMaker.apply(this, [values, 2]);
 
-    subscribe = (values = {}) => {
-        this.uniqueKey += 1;
-        const keys = Object.keys(values);
-        const uniqueKey = buildUniqueKeyName(this.uniqueKey);
+    reset = (...keys) => resetMaker.apply(this, [keys]);
 
-        for (let i = 0, len = keys.length; i < len; ++i) {
-            const key = keys[i];
-            if (!this.dataBunch[key]) {
-                ERR.initialValues("subscribe", key);
-                continue;
-            }
-
-            this.dataBunch[key].subscribers[uniqueKey] = values[key];
-            values[key](this.dataBunch[key].value);
-        }
-        return {
-            unsubscribe: (...customKeys) => {
-                const unsubscribeKeys = customKeys.length ? customKeys : keys;
-                for (let i = 0, len = unsubscribeKeys.length; i < len; ++i) {
-                    const key = unsubscribeKeys[i];
-                    delete this.dataBunch[key].subscribers[uniqueKey];
-                }
-            }
-        };
-    };
-
-    reset = (...keys) => {
-        const resetKeys = keys.length ? keys : Object.keys(this.initialValues);
-        for (let i = 0, len = resetKeys.length; i < len; ++i) {
-            const resetKey = resetKeys[i];
-            this.dataBunch[resetKey] = {
-                value: this.initialValues[resetKey],
-                subscribers: {}
-            };
-        }
-    };
+    remove = (...keys) => removeMaker.apply(this, [keys]);
 }
 
 export default DataBunch;
